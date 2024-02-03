@@ -178,9 +178,26 @@
 #define YAW_MAX_RPM				400
 #define YAW_MAX_CURRENT			20000
 
+#define ROTATE_ANGLE_KP			200
+#define ROTATE_ANGLE_KI			0
+#define ROTATE_ANGLE_KD			0
+#define ROTATE_ANGLE_INT_MAX	100
+
+#define ROTATE_RPM_KP			400
+#define ROTATE_RPM_KI			0
+#define ROTATE_RPM_KD			0
+#define ROTATE_RPM_INT_MAX		5000
+#define ROTATE_MAX_RPM			400
+#define ROTATE_MAX_CURRENT		20000
+
 #define YAW_CENTER 				5570
 #define YAW_MAX_ANG				PI//(PI-0.75)
 #define YAW_MIN_ANG				-PI//(-PI+0.75)
+
+#define FL_ROTATE_CENTER		0
+#define FR_ROTATE_CENTER		0
+#define BR_ROTATE_CENTER		0
+#define BL_ROTATE_CENTER		0
 
 #define SPIN_SPEED 				0.6
 #define SPIN_MOVEMENT 			1
@@ -195,6 +212,12 @@
 #define BR_MOTOR_ID 		16//14 // id + 12
 #define BL_MOTOR_ID 		15//13 // id + 12
 #endif
+
+#define FL_ROTATE_MOTOR_ID 	0
+#define FR_ROTATE_MOTOR_ID	0
+#define BR_ROTATE_MOTOR_ID	0
+#define BL_ROTATE_MOTOR_ID	0
+
 #define FEEDER_MOTOR_ID		6
 #define LFRICTION_MOTOR_ID	1
 #define RFRICTION_MOTOR_ID	3
@@ -213,24 +236,24 @@
 #define FR_ANG_Y 			-PI/2
 #define FR_ANG_PASSIVE		PI/4
 #define FR_DIST				312
-#define FR_VX_MULT			-1		//-cos(FR_ANG_Y - FR_ANG_PASSIVE)/sin(FR_ANG_PASSIVE)
-#define FR_VY_MULT			-1		//-sin(FR_ANG_Y - FR_ANG_PASSIVE)/sin(FR_ANG_PASSIVE)
+#define FR_VX_MULT			1		//-cos(FR_ANG_Y - FR_ANG_PASSIVE)/sin(FR_ANG_PASSIVE)
+#define FR_VY_MULT			1		//-sin(FR_ANG_Y - FR_ANG_PASSIVE)/sin(FR_ANG_PASSIVE)
 #define FR_YAW_MULT			1		//((-FR_DIST * sin(FR_ANG_Y - FR_ANG_PASSIVE - FR_ANG_X)) / (sin(FR_ANG_PASSIVE) * WHEEL_CIRC))
 
 #define FL_ANG_X			PI/4
 #define FL_ANG_Y 			PI/2
 #define FL_ANG_PASSIVE		-PI/4
 #define FL_DIST				312
-#define FL_VX_MULT			-1 		//-cos(FL_ANG_Y - FL_ANG_PASSIVE)/sin(FL_ANG_PASSIVE)
-#define FL_VY_MULT			1		//-sin(FL_ANG_Y - FL_ANG_PASSIVE)/sin(FL_ANG_PASSIVE)
+#define FL_VX_MULT			1 		//-cos(FL_ANG_Y - FL_ANG_PASSIVE)/sin(FL_ANG_PASSIVE)
+#define FL_VY_MULT			-1		//-sin(FL_ANG_Y - FL_ANG_PASSIVE)/sin(FL_ANG_PASSIVE)
 #define FL_YAW_MULT			1	//((-FL_DIST * sin(FL_ANG_Y - FL_ANG_PASSIVE - FL_ANG_X)) / (sin(FL_ANG_PASSIVE) * WHEEL_CIRC))
 
 #define BL_ANG_X			(3*PI/4)
 #define BL_ANG_Y 			PI/2
 #define BL_ANG_PASSIVE		PI/4
 #define BL_DIST				312
-#define BL_VX_MULT			1		//-cos(BL_ANG_Y - BL_ANG_PASSIVE)/sin(BL_ANG_PASSIVE)
-#define BL_VY_MULT			1		//-sin(BL_ANG_Y - BL_ANG_PASSIVE)/sin(BL_ANG_PASSIVE)
+#define BL_VX_MULT			-1		//-cos(BL_ANG_Y - BL_ANG_PASSIVE)/sin(BL_ANG_PASSIVE)
+#define BL_VY_MULT			-1		//-sin(BL_ANG_Y - BL_ANG_PASSIVE)/sin(BL_ANG_PASSIVE)
 #define BL_YAW_MULT			1	//((-BL_DIST * sin(BL_ANG_Y - BL_ANG_PASSIVE - BL_ANG_X)) / (sin(BL_ANG_PASSIVE) * WHEEL_CIRC))
 
 #define BR_ANG_X			-(3*PI/4)
@@ -241,6 +264,8 @@
 #define BR_VY_MULT			-1		//-sin(BR_ANG_Y - BR_ANG_PASSIVE)/sin(BR_ANG_PASSIVE)
 #define BR_YAW_MULT			1	//((-BR_DIST * sin(BR_ANG_Y - BR_ANG_PASSIVE - BR_ANG_X)) / (sin(BR_ANG_PASSIVE) * WHEEL_CIRC))
 
+#define MOTOR_X_DIST		1  // horizontal distance between robot center and wheel pivot
+#define MOTOR_Y_DIST		1  // vertical distance between robot center and wheel pivot
 /*********************** OTHERS ***********************/
 
 #define CONTROL_DELAY 			2

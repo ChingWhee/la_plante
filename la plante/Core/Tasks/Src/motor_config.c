@@ -115,7 +115,6 @@ void config_motors() {
 #endif
 
 #ifdef BR_MOTOR_ID
-
 	motor_id = BR_MOTOR_ID - 1;
 	can_motors[motor_id].motor_type = TYPE_M3508;
 	set_motor_config(&can_motors[motor_id]);
@@ -232,6 +231,98 @@ void config_motors() {
 	can_motors[motor_id].rpm_pid.kd = YAWRPM_KD;
 	can_motors[motor_id].rpm_pid.int_max = YAWRPM_INT_MAX;
 	can_motors[motor_id].rpm_pid.max_out = YAW_MAX_CURRENT;
+#endif
+
+#ifdef FL_ROTATE_MOTOR_ID
+	motor_id = FL_ROTATE_MOTOR_ID - 1;
+	can_motors[motor_id].motor_type = TYPE_GM6020;
+	set_motor_config(&can_motors[motor_id]);
+	can_motors[motor_id].angle_data.gearbox_ratio = 0;	//1;
+	can_motors[motor_id].angle_data.center_ang = FL_ROTATE_CENTER;
+	can_motors[motor_id].angle_data.max_ang = 2 * PI;
+	can_motors[motor_id].angle_data.min_ang = -2 * PI;
+	can_motors[motor_id].angle_data.phy_max_ang = 2 * PI;
+	can_motors[motor_id].angle_data.phy_min_ang = -2 * PI;
+	can_motors[motor_id].angle_data.wheel_circ = 0;
+	can_motors[motor_id].angle_pid.kp = ROTATE_ANGLE_KP;
+	can_motors[motor_id].angle_pid.ki = ROTATE_ANGLE_KI;
+	can_motors[motor_id].angle_pid.kd = ROTATE_ANGLE_KD;
+	can_motors[motor_id].angle_pid.int_max = ROTATE_ANGLE_INT_MAX;
+	can_motors[motor_id].angle_pid.max_out = ROTATE_MAX_RPM;
+	can_motors[motor_id].rpm_pid.kp = ROTATE_RPM_KP;
+	can_motors[motor_id].rpm_pid.ki = ROTATE_RPM_KI;
+	can_motors[motor_id].rpm_pid.kd = ROTATE_RPM_KD;
+	can_motors[motor_id].rpm_pid.int_max = ROTATE_RPM_INT_MAX;
+	can_motors[motor_id].rpm_pid.max_out = ROTATE_MAX_CURRENT;
+#endif
+
+#ifdef FR_ROTATE_MOTOR_ID
+	motor_id = FR_ROTATE_MOTOR_ID - 1;
+	can_motors[motor_id].motor_type = TYPE_GM6020;
+	set_motor_config(&can_motors[motor_id]);
+	can_motors[motor_id].angle_data.gearbox_ratio = 0;	//1;
+	can_motors[motor_id].angle_data.center_ang = FR_ROTATE_CENTER;
+	can_motors[motor_id].angle_data.max_ang = 2 * PI;
+	can_motors[motor_id].angle_data.min_ang = -2 * PI;
+	can_motors[motor_id].angle_data.phy_max_ang = 2 * PI;
+	can_motors[motor_id].angle_data.phy_min_ang = -2 * PI;
+	can_motors[motor_id].angle_data.wheel_circ = 0;
+	can_motors[motor_id].angle_pid.kp = ROTATE_ANGLE_KP;
+	can_motors[motor_id].angle_pid.ki = ROTATE_ANGLE_KI;
+	can_motors[motor_id].angle_pid.kd = ROTATE_ANGLE_KD;
+	can_motors[motor_id].angle_pid.int_max = ROTATE_ANGLE_INT_MAX;
+	can_motors[motor_id].angle_pid.max_out = ROTATE_MAX_RPM;
+	can_motors[motor_id].rpm_pid.kp = ROTATE_RPM_KP;
+	can_motors[motor_id].rpm_pid.ki = ROTATE_RPM_KI;
+	can_motors[motor_id].rpm_pid.kd = ROTATE_RPM_KD;
+	can_motors[motor_id].rpm_pid.int_max = ROTATE_RPM_INT_MAX;
+	can_motors[motor_id].rpm_pid.max_out = ROTATE_MAX_CURRENT;
+#endif
+
+#ifdef BR_ROTATE_MOTOR_ID
+	motor_id = BR_ROTATE_MOTOR_ID - 1;
+	can_motors[motor_id].motor_type = TYPE_GM6020;
+	set_motor_config(&can_motors[motor_id]);
+	can_motors[motor_id].angle_data.gearbox_ratio = 0;	//1;
+	can_motors[motor_id].angle_data.center_ang = BR_ROTATE_CENTER;
+	can_motors[motor_id].angle_data.max_ang = 2 * PI;
+	can_motors[motor_id].angle_data.min_ang = -2 * PI;
+	can_motors[motor_id].angle_data.phy_max_ang = 2 * PI;
+	can_motors[motor_id].angle_data.phy_min_ang = -2 * PI;
+	can_motors[motor_id].angle_data.wheel_circ = 0;
+	can_motors[motor_id].angle_pid.kp = ROTATE_ANGLE_KP;
+	can_motors[motor_id].angle_pid.ki = ROTATE_ANGLE_KI;
+	can_motors[motor_id].angle_pid.kd = ROTATE_ANGLE_KD;
+	can_motors[motor_id].angle_pid.int_max = ROTATE_ANGLE_INT_MAX;
+	can_motors[motor_id].angle_pid.max_out = ROTATE_MAX_RPM;
+	can_motors[motor_id].rpm_pid.kp = ROTATE_RPM_KP;
+	can_motors[motor_id].rpm_pid.ki = ROTATE_RPM_KI;
+	can_motors[motor_id].rpm_pid.kd = ROTATE_RPM_KD;
+	can_motors[motor_id].rpm_pid.int_max = ROTATE_RPM_INT_MAX;
+	can_motors[motor_id].rpm_pid.max_out = ROTATE_MAX_CURRENT;
+#endif
+
+#ifdef BL_ROTATE_MOTOR_ID
+	motor_id = BL_ROTATE_MOTOR_ID - 1;
+	can_motors[motor_id].motor_type = TYPE_GM6020;
+	set_motor_config(&can_motors[motor_id]);
+	can_motors[motor_id].angle_data.gearbox_ratio = 0;	//1;
+	can_motors[motor_id].angle_data.center_ang = BL_ROTATE_CENTER;
+	can_motors[motor_id].angle_data.max_ang = 2 * PI;
+	can_motors[motor_id].angle_data.min_ang = -2 * PI;
+	can_motors[motor_id].angle_data.phy_max_ang = 2 * PI;
+	can_motors[motor_id].angle_data.phy_min_ang = -2 * PI;
+	can_motors[motor_id].angle_data.wheel_circ = 0;
+	can_motors[motor_id].angle_pid.kp = ROTATE_ANGLE_KP;
+	can_motors[motor_id].angle_pid.ki = ROTATE_ANGLE_KI;
+	can_motors[motor_id].angle_pid.kd = ROTATE_ANGLE_KD;
+	can_motors[motor_id].angle_pid.int_max = ROTATE_ANGLE_INT_MAX;
+	can_motors[motor_id].angle_pid.max_out = ROTATE_MAX_RPM;
+	can_motors[motor_id].rpm_pid.kp = ROTATE_RPM_KP;
+	can_motors[motor_id].rpm_pid.ki = ROTATE_RPM_KI;
+	can_motors[motor_id].rpm_pid.kd = ROTATE_RPM_KD;
+	can_motors[motor_id].rpm_pid.int_max = ROTATE_RPM_INT_MAX;
+	can_motors[motor_id].rpm_pid.max_out = ROTATE_MAX_CURRENT;
 #endif
 }
 

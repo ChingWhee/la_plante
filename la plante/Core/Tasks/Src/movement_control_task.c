@@ -141,26 +141,35 @@ void chassis_motion_control(motor_data_t *motorfr, motor_data_t *motorfl,
 	float rel_yaw = chassis_ctrl_data.yaw;
 
 	// distance of the robot center to the wheel pivot (in mm)
-	uint16_t motor_x_dist = MOTOR_X_DIST;
-	uint16_t motor_y_dist = MOTOR_Y_DIST;
-
-	float yaw_scale = 1.0;
+	float motor_x_dist = MOTOR_X_DIST;
+	float motor_y_dist = MOTOR_Y_DIST;
+	// scale the x and y distance to < 1
 	float dist_scale = (motor_x_dist > motor_y_dist) ? motor_x_dist : motor_y_dist;
-	float angular_v = rel_yaw * yaw_scale / dist_scale; 	// scale the x and y distance to < 1
+	motor_x_dist /= dist_scale;
+	motor_y_dist /= dist_scale;
 
 	for (uint8_t a = 0; a < 4; a++) {
-		translation_rpm_x[a] = rel_horizontal + motor_x_mult[a] * angular_v;
-		translation_rpm_y[a] = rel_forward + motor_y_mult[a] * angular_v;
+		translation_rpm_x[a] = rel_horizontal + motor_x_mult[a] * motor_x_dist * rel_yaw;
+		translation_rpm_y[a] = rel_forward + motor_y_mult[a] * motor_y_dist * rel_yaw;
 		translation_rpm[a] = sqrt(pow(translation_rpm_x[a], 2) + pow(translation_rpm_y[a], 2));
 		rotation_angle[a] = atan(translation_rpm_y[a] / translation_rpm_x[a]);
+
+		if (translation_rpm_y[a] < 0) {
+			translation_rpm[a] *= -1;
+		}
 	}
+
+    optimise_angle(rotatefr, &rotation_angle[0], &translation_rpm[0]);
+    optimise_angle(rotatefl, &rotation_angle[1], &translation_rpm[1]);
+    optimise_angle(rotatebl, &rotation_angle[2], &translation_rpm[2]);
+    optimise_angle(rotatebr, &rotation_angle[3], &translation_rpm[3]);
 
 	//if forward + horizontal + yaw > 1 for any wheel
 	//scale all the RPM for all the wheels equally so that one wheel does not exceed max RPM
 	float rpm_mult = 1;
 	for (uint8_t i = 0; i < 4; i++) {
 		if (fabs(translation_rpm[i]) > rpm_mult) {
-			rpm_mult = translation_rpm[i];
+			rpm_mult = fabs(translation_rpm[i]);
 		}
 	}
 
@@ -175,9 +184,17 @@ void chassis_motion_control(motor_data_t *motorfr, motor_data_t *motorfl,
 
 	//calculate the outputs for each motor
 	swerve_turn(motorfr, rotatefr, rotation_angle[0], translation_rpm[0]);
+	total_power += fabs(motorfr->rpm_pid.output);
+	total_power += fabs(rotatefr->rpm_pid.output);
 	swerve_turn(motorfl, rotatefl, rotation_angle[1], translation_rpm[1]);
+	total_power += fabs(motorfl->rpm_pid.output);
+	total_power += fabs(rotatefl->rpm_pid.output);
 	swerve_turn(motorbl, rotatebl, rotation_angle[2], translation_rpm[2]);
+	total_power += fabs(motorbl->rpm_pid.output);
+	total_power += fabs(motorfr->rpm_pid.output);
 	swerve_turn(motorbr, rotatebr, rotation_angle[3], translation_rpm[3]);
+	total_power += fabs(motorbr->rpm_pid.output);
+	total_power += fabs(motorfr->rpm_pid.output);
 
 //	speed_pid(translation_rpm[0], motorfr->raw_data.rpm, &motorfr->rpm_pid);
 //	total_power += fabs(motorfr->rpm_pid.output);
@@ -193,6 +210,15 @@ void chassis_motion_control(motor_data_t *motorfr, motor_data_t *motorfl,
 	motor_send_can(can_motors, FR_MOTOR_ID, FL_MOTOR_ID, BL_MOTOR_ID,
 			BR_MOTOR_ID);
 }
+
+void optimise_angle(motor_data_t *rotate_motor, float *rotation_angle, float *translation_rpm) {
+	if (fabs(*rotation_angle - rotate_motor->angle_data.adj_ang) > (PI / 2)) {
+		*rotation_angle += PI;
+		*translation_rpm *= -1;
+	}
+}
+
+
 
 void swerve_turn(motor_data_t *movement_motor, motor_data_t *rotate_motor, float rotation_angle, float translation_rpm) {
 	speed_pid(translation_rpm, movement_motor->raw_data.rpm, &movement_motor->rpm_pid);

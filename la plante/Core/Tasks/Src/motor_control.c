@@ -94,6 +94,7 @@ void angle_pid(double setpoint, double curr_pt, motor_data_t *motor) {
 	} else if (ang_diff < -PI) {
 		ang_diff += 2 * PI;
 	}
+
 	motor->angle_pid.error[1] = motor->angle_pid.error[0];
 	motor->angle_pid.error[0] = ang_diff;
 	float rpm_pOut = motor->angle_pid.kp * ang_diff;

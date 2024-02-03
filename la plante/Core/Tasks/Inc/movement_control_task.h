@@ -11,6 +11,7 @@
 
 void movement_control_task(void *argument);
 void chassis_motion_control();
+void optimise_angle(motor_data_t *rotate_motor, float *rotation_angle, float *translation_rpm);
 void swerve_turn(motor_data_t *movement_motor, motor_data_t *rotate_motor, float rotation_angle, float translation_rpm);
 void chassis_pid_init();
 
